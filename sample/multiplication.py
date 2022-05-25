@@ -2,6 +2,8 @@
 filename: multiplication.py
 """
 
+from math import ceil
+
 
 def elementary(n_1, n_2):
   """Elementary method of integer multiplication"""
@@ -35,19 +37,31 @@ def recursive(n_1, n_2):
   return result
 
 
-def karatsuba(n_1, n_2):
+def karatsuba(x, y):
   """Karatsuba method of integer multiplication"""
-  result = 0
-  return result
+  if len(str(x)) == 1 or len(str(y)) == 1:
+    return x * y
+  else:
+    n = max(len(str(x)),len(str(y)))
+    m = ceil(n/2)
+    a = x // 10**m
+    b = x % 10**m
+    c = y // 10**m
+    d = y % 10**m
 
+    ac = karatsuba(a, c)
+    bd = karatsuba(b, d)
+    ad_plus_bc = karatsuba(a+b,c+d) - ac - bd
+
+    return 10**n*ac + 10**(m)*ad_plus_bc + bd
 
 def main():
   """main function"""
-  result = elementary(
-      3141592653589793238462643383279502884197169399375105820974944592, 
-      2718281828459045235360287471352662497757247093699959574966967627
-    )
-  print(result)
+  x = 3141592653589793238462643383279502884197169399375105820974944592
+  y = 2718281828459045235360287471352662497757247093699959574966967627
+  print(elementary(x, y))
+  print(karatsuba(x, y))
+  print(x*y)
 
 
 if __name__ == "__main__":
