@@ -1,5 +1,5 @@
-from fileinput import close
 import math
+import os
 
 
 def merge(a, b, key):
