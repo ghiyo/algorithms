@@ -4,9 +4,12 @@ filename: merge-sort.py
 
 
 import copy
+import math
+import multiprocessing
 import os
 from numpy import random
 import numpy
+from multiprocessing import Pool, cpu_count
 
 
 def PickRandomEdge(graph):
@@ -64,19 +67,34 @@ def RContraction(graph):
     return cut
 
 
+def min_cut_trial(graph, trials):
+    graph_copy = copy.deepcopy(graph)
+    min_cut = RContraction(graph_copy)
+    for i in range(trials):
+        if multiprocessing.current_process().name == "ForkPoolWorker-1":
+            percentage_completed = i / trials * 100
+            print(f'\r>> {trials} / {i} (% {percentage_completed:.2f})',
+                  end="", flush=True)
+        graph_copy = copy.deepcopy(graph)
+        new_min_cut = RContraction(graph_copy)
+        if new_min_cut < min_cut:
+            min_cut = new_min_cut
+    return min_cut
+
+
 def minimum_cut(graph):
     """Returns the minimum cut of a graph"""
     graph_copy = copy.deepcopy(graph)
     min_cut = RContraction(graph_copy)
     n = len(graph)
     trial_num = int(numpy.ceil((n ** 2) * numpy.log(n))) - 1
-    for i in range(trial_num):
-        percentage_completed = i / trial_num * 100
-        print(f'\r>> {trial_num} / {i} (% {percentage_completed:.2f})', end="")
-        graph_copy = copy.deepcopy(graph)
-        new_min_cut = RContraction(graph_copy)
-        if new_min_cut < min_cut:
-            min_cut = new_min_cut
+    with Pool(processes=cpu_count()) as p:
+        p_trial_num = math.ceil(trial_num / cpu_count())
+        results = p.starmap(min_cut_trial, [(graph, p_trial_num)
+                                            for _ in range(cpu_count())])
+        p.close()
+        p.join()
+    min_cut = min(results)
     return min_cut
 
 
