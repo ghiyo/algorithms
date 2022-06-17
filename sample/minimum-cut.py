@@ -5,9 +5,7 @@ filename: merge-sort.py
 
 import copy
 import os
-import sys
-import time
-from numpy import percentile, random
+from numpy import random
 import numpy
 
 
