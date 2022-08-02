@@ -100,6 +100,10 @@ class Heap:
             self._bubble_down(self.type)
         return key
 
+    def peek(self):
+        """Returns a copy of the value at the top of the heap"""
+        return deepcopy(self.items[0])
+
     def print_heap(self):
         """Displays the heap"""
         for i in self.items:
