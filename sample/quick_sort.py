@@ -1,5 +1,5 @@
 """
-filename: quick-sort.py
+filename: quick_sort.py
 """
 
 

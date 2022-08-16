@@ -1,5 +1,8 @@
+"""
+filename: closest_pair.py
+"""
+
 import math
-import os
 
 
 def merge(a, b, key):

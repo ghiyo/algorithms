@@ -1,5 +1,5 @@
 """
-filename: matrix-multiplication.py
+filename: matrix_multiplication.py
 Matrix multiplication for n x n matrices.
 """
 

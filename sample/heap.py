@@ -4,6 +4,8 @@ filename: heap.py
 
 
 from copy import deepcopy
+import heapq
+import os
 
 
 class Heap:
@@ -37,23 +39,25 @@ class Heap:
     def _heap_condition(self, p, c, t):
         """returns true if p < c for min heap and p > c for max heap"""
         if t == "max":
-            return self.items[p] < self.items[c]
-        return self.items[p] > self.items[c]
+            return self.items[p] <= self.items[c]
+        return self.items[p] >= self.items[c]
 
     def _bubble_down_aux(self, p, l, r, t):
-        if l >= len(self.items) and r >= len(self.items):
+        # print(f'{p} -> l: {l} r: {r}')
+        if l > len(self.items) and r > len(self.items):
             return
-        if r >= len(self.items):
-            self._swap(p, l)
+        if r > len(self.items):
+            if self._heap_condition(p-1, l-1, t):
+                self._swap(p-1, l-1)
             return
         # if self.items[l] < self.items[r] and self.items[p] > self.items[l]:
-        if self._heap_condition(r, l, t) and self._heap_condition(p, l, t):
-            self._swap(p, l)
-            self._bubble_down_aux(l, l*2-1, l*2, t)
+        if self._heap_condition(r-1, l-1, t) and self._heap_condition(p-1, l-1, t):
+            self._swap(p-1, l-1)
+            self._bubble_down_aux(l, l*2, l*2+1, t)
         # elif self.items[p] > self.items[r]:
-        elif self._heap_condition(p, r, t):
-            self._swap(p, r)
-            self._bubble_down_aux(r, r*2-1, r*2, t)
+        elif self._heap_condition(p-1, r-1, t):
+            self._swap(p-1, r-1)
+            self._bubble_down_aux(r, r*2, r*2+1, t)
 
     def _bubble_down(self, t, index=1):
         """Restores the heap property by moving keys down"""
@@ -62,7 +66,7 @@ class Heap:
             l = 2 * index - 1
             r = 2 * index
             if len(self.items) >= 3:
-                self._bubble_down_aux(p, l, r, t)
+                self._bubble_down_aux(p+1, l+1, r+1, t)
             # elif self.items[l] < self.items[p]:
             elif self._heap_condition(p, l, t):
                 self._swap(p, l)
@@ -102,6 +106,8 @@ class Heap:
 
     def peek(self):
         """Returns a copy of the value at the top of the heap"""
+        if self.is_empty():
+            return None
         return deepcopy(self.items[0])
 
     def print_heap(self):
@@ -113,13 +119,31 @@ class Heap:
 
 def main():
     """main function"""
-    test = [4, 4, 8, 9, 4, 9, 12, 11, 13]
+    cur_path = os.path.dirname(__file__)
+    new_path = os.path.relpath("../input/Median-Maintenance.txt", cur_path)
+    f = open(new_path, "r", encoding="utf-8")
+    line = f.read()
+    num_input = [int(i) for i in line.split()]
+    test = [4, 4, 4, 6]
+    hh = []
+    lh = []
+    heapq.heapify(hh)
+    heapq.heapify(lh)
     heap = Heap("min")
-    for i in test:
+    m = Heap("max")
+    equal = True
+    for i in num_input:
+        m.insert(i)
         heap.insert(i)
-    heap.print_heap()
-    while heap.is_empty() is False:
-        print(f'{heap.extract()}')
+        heapq.heappush(lh, i)
+        heapq.heappush(hh, i*-1)
+        equal = len(m) == len(heap) == len(hh) == len(lh)
+    while heap.is_empty() is False and equal:
+        min = heapq.heappop(lh)
+        max = heapq.heappop(hh) * -1
+        equal = heap.extract() == min and m.extract() == max and len(
+            m) == len(heap) == len(hh) == len(lh)
+    print(equal)
 
 
 if __name__ == "__main__":

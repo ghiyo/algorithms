@@ -1,5 +1,5 @@
 """
-filename: merge-sort.py
+filename: merge_sort.py
 """
 
 
