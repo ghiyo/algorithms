@@ -2,9 +2,7 @@
 filename: prims.py
 """
 
-from collections import defaultdict
 from copy import deepcopy
-import math
 import os
 import heapq
 

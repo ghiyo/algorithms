@@ -2,14 +2,13 @@
 filename: minimum_cut.py
 """
 
-
+from multiprocessing import Pool, cpu_count
 import copy
 import math
 import multiprocessing
 import os
 from numpy import random
 import numpy
-from multiprocessing import Pool, cpu_count
 
 
 def PickRandomEdge(graph):
