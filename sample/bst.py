@@ -280,27 +280,34 @@ class BST:
 
 def main():
     """main function"""
-    test = [5, 5, 2, 2, 2, 7, 1, 4, 3, 6, 9, 8]
+    # test = [5, 5, 2, 2, 2, 7, 1, 4, 3, 6, 9, 8]
+    # bst = BST()
+    # for i in test:
+    #     print(f'{bst.insert(i)} ', end="")
+    # print()
+    # bst.inorder()
+    # for i in test:
+    #     pred, succ = bst.pred_succ(i)
+    #     print(f'>> {i} >> {pred} {succ}')
+    # for i in range(1, bst.length+1):
+    #     print(f'{i}: order: {bst.order(i)}')
+    # for i in test:
+    #     print(f'value: {i} rank: {bst.rank(i)}')
+    # print(bst.length)
+    # print(bst.search(5))
+    # bst.delete(5)
+    # print(bst.search(5))
+    # bst.preorder()
+    # print(bst.length)
+    # print(bst.min())
+    # print(bst.max())
+    test = [7, 5, 9, 6, 4, 8, 10]
     bst = BST()
     for i in test:
-        print(f'{bst.insert(i)} ', end="")
-    print()
+        bst.insert(i)
     bst.inorder()
-    for i in test:
-        pred, succ = bst.pred_succ(i)
-        print(f'>> {i} >> {pred} {succ}')
-    for i in range(1, bst.length+1):
-        print(f'{i}: order: {bst.order(i)}')
-    for i in test:
-        print(f'value: {i} rank: {bst.rank(i)}')
-    print(bst.length)
-    print(bst.search(5))
-    bst.delete(5)
-    print(bst.search(5))
     bst.preorder()
-    print(bst.length)
-    print(bst.min())
-    print(bst.max())
+    bst.postorder()
 
 
 if __name__ == "__main__":
